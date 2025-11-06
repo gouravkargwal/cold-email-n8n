@@ -1,0 +1,148 @@
+{
+  "name": "Cold Email Automation - Data Science Outreach",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [100, 500]
+    },
+    {
+      "parameters": {
+        "filePath": "/files/contacts_batch1.csv",
+        "options": {}
+      },
+      "id": "read-csv",
+      "name": "Read CSV File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get binary data from readBinaryFile node\nconst item = items[0];\n\nif (!item.binary || !item.binary.data) {\n  throw new Error('No binary data found. Check Read CSV File node.');\n}\n\n// n8n binary structure: binary.data contains the base64 string\nlet base64String;\nconst binaryData = item.binary.data;\n\n// Handle different binary data structures\nif (typeof binaryData === 'string') {\n  base64String = binaryData;\n} else if (binaryData.data && typeof binaryData.data === 'string') {\n  base64String = binaryData.data;\n} else {\n  throw new Error('Unexpected binary data format');\n}\n\n// Decode base64 to get CSV text\nlet csvText;\ntry {\n  const buffer = Buffer.from(base64String, 'base64');\n  csvText = buffer.toString('utf8');\n} catch (e) {\n  // If base64 decode fails, try using as plain text\n  csvText = base64String;\n}\n\n// Split into lines and filter empty lines\nconst lines = csvText.split(/\\r?\\n/).filter(line => line.trim().length > 0);\n\nif (lines.length < 2) {\n  throw new Error('CSV file has no data rows (only header or empty)');\n}\n\n// Parse CSV rows\n// CSV format: HR Name, HR Email, HR Position, Company Name\nconst results = [];\nfor (let i = 1; i < lines.length; i++) {\n  const line = lines[i].trim();\n  if (!line) continue;\n  \n  // Split by comma and trim each value\n  const values = line.split(',').map(v => v.trim());\n  \n  // Ensure we have all 4 columns\n  if (values.length >= 4) {\n    results.push({\n      json: {\n        hrName: values[0] || '',\n        hrEmail: values[1] || '',\n        hrPosition: values[2] || '',\n        companyName: values[3] || ''\n      }\n    });\n  }\n}\n\nif (results.length === 0) {\n  throw new Error('No valid rows parsed from CSV');\n}\n\nreturn results;"
+      },
+      "id": "parse-csv",
+      "name": "Parse CSV Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "guptasejal2807@gmail.com",
+        "toEmail": "={{ $json.hrEmail }}",
+        "subject": "={{ 'Quick question about data roles at ' + $json.companyName }}",
+        "text": "={{ 'Hi ' + $json.hrName + ',\\n\\nI noticed ' + $json.companyName + ' is growing, and I\\'m curious if you\\'re hiring for data science roles.\\n\\nI\\'m a Data Scientist at RGA with experience building systems that drive real business results:\\n• Reduced fraud detection errors by 11%\\n• Built recommendation systems that improved performance by 40%\\n\\nWould love to chat if there\\'s a fit, or if you could point me to the right person.\\n\\nThanks!\\nSejal Gupta\\nhttps://www.linkedin.com/in/sejal-gupta-2a542b258/\\n+91 8890176883' }}",
+        "options": {}
+      },
+      "id": "send-email",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [700, 300],
+      "credentials": {
+        "smtp": {
+          "id": "gmail-smtp",
+          "name": "Gmail SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "wait-delay",
+      "name": "Wait Between Emails",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read CSV File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read CSV File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read CSV File": {
+      "main": [
+        [
+          {
+            "node": "Parse CSV Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse CSV Data": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "main": [
+        [
+          {
+            "node": "Wait Between Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["cold-email", "data-science", "outreach"],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-07T01:15:00.000Z",
+  "versionId": "4"
+}

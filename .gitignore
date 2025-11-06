@@ -1,0 +1,26 @@
+# Docker volumes
+n8n_data/
+
+# Local files directory (may contain sensitive data)
+local-files/*.csv
+local-files/*.xlsx
+local-files/*.json
+
+# Keep the directory structure
+!local-files/.gitkeep
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
