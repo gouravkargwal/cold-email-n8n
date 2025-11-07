@@ -11,7 +11,7 @@
     },
     {
       "parameters": {
-        "filePath": "/files/contacts.csv",
+        "filePath": "/files/contacts_batch1_batch3.csv",
         "options": {}
       },
       "id": "read-csv",
@@ -60,7 +60,7 @@
         "fromEmail": "guptasejal2807@gmail.com",
         "toEmail": "={{ $json.hrEmail }}",
         "subject": "={{ 'MNIT Graduate | Data Scientist interested in ' + $json.companyName }}",
-        "text": "={{ 'Hi ' + $json.hrName + ',\\n\\nI\\'m actively looking for Data Science roles and interested in ' + $json.companyName + '.\\n\\nCurrently at RGA (Reinsurance Group of America), where I:\\n• Built fraud detection models that reduced fraudulent policies by 11%\\n• Increased underwriting efficiency from 50% to 60% using ML on 200K+ records\\n• Developed predictive models improving risk classification accuracy by 8%\\n\\nBTech from NIT Jaipur with strong Python/ML expertise. I\\'d love to interview for data science positions at ' + $json.companyName + '.\\n\\nAre you hiring, or could you point me to who handles data science recruitment?\\n\\nResume attached. Happy to discuss further.\\n\\nBest,\\nSejal Gupta\\n+91 8890176883\\nlinkedin.com/in/sejal-gupta-2a542b258' }}",
+        "text": "={{ 'Hi ' + $json.hrName + ',\\n\\nI\\'m actively looking for Data Science roles and interested in ' + $json.companyName + '.\\n\\nCurrently at RGA (Reinsurance Group of America), where I:\\n• Built fraud detection models that reduced fraudulent policies by 11%\\n• Increased underwriting efficiency from 50% to 60% using ML on 200K+ records\\n• Developed predictive models improving risk classification accuracy by 8%\\n\\nBTech from NIT Jaipur with strong Python/ML expertise. I\\'d love to interview for data science positions at ' + $json.companyName + '.\\n\\nAre you hiring, or could you point me to who handles data science recruitment?\\n\\nResume attached. Happy to discuss further.\\n\\nBest Regards,\\nSejal Gupta\\n+91 8890176883\\nlinkedin.com/in/sejal-gupta-2a542b258' }}",
         "options": {
           "attachments": "data"
         }
