@@ -11,7 +11,7 @@
     },
     {
       "parameters": {
-        "filePath": "/files/contacts_batch1_batch1.csv",
+        "filePath": "/files/contacts.csv",
         "options": {}
       },
       "id": "read-csv",
@@ -19,6 +19,19 @@
       "type": "n8n-nodes-base.readBinaryFile",
       "typeVersion": 1,
       "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "filePath": "/files/Sejal_Gupta.pdf",
+        "options": {
+          "fileName": "Sejal_Gupta_Resume.pdf"
+        }
+      },
+      "id": "read-resume",
+      "name": "Read Resume File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [300, 450]
     },
     {
       "parameters": {
@@ -32,17 +45,31 @@
     },
     {
       "parameters": {
+        "mode": "combine",
+        "combinationMode": "multiplex",
+        "options": {}
+      },
+      "id": "merge-data",
+      "name": "Merge Resume with Contacts",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [700, 375]
+    },
+    {
+      "parameters": {
         "fromEmail": "guptasejal2807@gmail.com",
         "toEmail": "={{ $json.hrEmail }}",
         "subject": "={{ 'Quick question about data roles at ' + $json.companyName }}",
         "text": "={{ 'Hi ' + $json.hrName + ',\\n\\nI noticed ' + $json.companyName + ' is growing, and I\\'m curious if you\\'re hiring for data science roles.\\n\\nI\\'m a Data Scientist at RGA with experience building systems that drive real business results:\\n• Reduced fraud detection errors by 11%\\n• Built recommendation systems that improved performance by 40%\\n\\nWould love to chat if there\\'s a fit, or if you could point me to the right person.\\n\\nThanks!\\nSejal Gupta\\nhttps://www.linkedin.com/in/sejal-gupta-2a542b258/\\n+91 8890176883' }}",
-        "options": {}
+        "options": {
+          "attachments": "data"
+        }
       },
       "id": "send-email",
       "name": "Send Email",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2,
-      "position": [700, 300],
+      "position": [900, 375],
       "credentials": {
         "smtp": {
           "id": "gmail-smtp",
@@ -59,7 +86,7 @@
       "name": "Wait Between Emails",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
-      "position": [900, 300]
+      "position": [1100, 375]
     }
   ],
   "connections": {
@@ -68,6 +95,11 @@
         [
           {
             "node": "Read CSV File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read Resume File",
             "type": "main",
             "index": 0
           }
@@ -85,7 +117,29 @@
         ]
       ]
     },
+    "Read Resume File": {
+      "main": [
+        [
+          {
+            "node": "Merge Resume with Contacts",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
     "Parse CSV Data": {
+      "main": [
+        [
+          {
+            "node": "Merge Resume with Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Resume with Contacts": {
       "main": [
         [
           {
@@ -115,6 +169,6 @@
   "staticData": null,
   "tags": ["cold-email", "data-science", "outreach"],
   "triggerCount": 0,
-  "updatedAt": "2025-11-07T01:15:00.000Z",
-  "versionId": "4"
+  "updatedAt": "2025-11-07T08:49:00.000Z",
+  "versionId": "9"
 }
