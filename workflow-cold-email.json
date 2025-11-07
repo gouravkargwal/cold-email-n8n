@@ -59,8 +59,8 @@
       "parameters": {
         "fromEmail": "guptasejal2807@gmail.com",
         "toEmail": "={{ $json.hrEmail }}",
-        "subject": "={{ 'Quick question about data roles at ' + $json.companyName }}",
-        "text": "={{ 'Hi ' + $json.hrName + ',\\n\\nI noticed ' + $json.companyName + ' is growing, and I\\'m curious if you\\'re hiring for data science roles.\\n\\nI\\'m a Data Scientist at RGA with experience building systems that drive real business results:\\n• Reduced fraud detection errors by 11%\\n• Built recommendation systems that improved performance by 40%\\n\\nWould love to chat if there\\'s a fit, or if you could point me to the right person.\\n\\nThanks!\\nSejal Gupta\\nhttps://www.linkedin.com/in/sejal-gupta-2a542b258/\\n+91 8890176883' }}",
+        "subject": "={{ 'MNIT Graduate | Data Scientist interested in ' + $json.companyName }}",
+        "text": "={{ 'Hi ' + $json.hrName + ',\\n\\nI\\'m actively looking for Data Science roles and interested in ' + $json.companyName + '.\\n\\nCurrently at RGA (Reinsurance Group of America), where I:\\n• Built fraud detection models that reduced fraudulent policies by 11%\\n• Increased underwriting efficiency from 50% to 60% using ML on 200K+ records\\n• Developed predictive models improving risk classification accuracy by 8%\\n\\nBTech from NIT Jaipur with strong Python/ML expertise. I\\'d love to interview for data science positions at ' + $json.companyName + '.\\n\\nAre you hiring, or could you point me to who handles data science recruitment?\\n\\nResume attached. Happy to discuss further.\\n\\nBest,\\nSejal Gupta\\n+91 8890176883\\nlinkedin.com/in/sejal-gupta-2a542b258' }}",
         "options": {
           "attachments": "data"
         }
@@ -169,6 +169,6 @@
   "staticData": null,
   "tags": ["cold-email", "data-science", "outreach"],
   "triggerCount": 0,
-  "updatedAt": "2025-11-07T08:49:00.000Z",
-  "versionId": "9"
+  "updatedAt": "2025-11-07T09:00:00.000Z",
+  "versionId": "11"
 }
