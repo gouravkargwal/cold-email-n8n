@@ -11,24 +11,7 @@
     },
     {
       "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "cronExpression",
-              "expression": "0 9 * * *"
-            }
-          ]
-        }
-      },
-      "id": "cron-trigger",
-      "name": "Schedule Trigger",
-      "type": "n8n-nodes-base.cron",
-      "typeVersion": 1,
-      "position": [100, 500]
-    },
-    {
-      "parameters": {
-        "filePath": "/files/contacts_batch1.csv",
+        "filePath": "/files/contacts_batch1_batch1.csv",
         "options": {}
       },
       "id": "read-csv",
@@ -81,17 +64,6 @@
   ],
   "connections": {
     "Manual Trigger": {
-      "main": [
-        [
-          {
-            "node": "Read CSV File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Schedule Trigger": {
       "main": [
         [
           {
